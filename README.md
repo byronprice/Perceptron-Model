@@ -14,4 +14,4 @@ With very few modifications, this code can be made to work for any network, on a
 
 Change the variable "runs" in the stochastic gradient descent algorithm for longer training periods.  With more and more training runs, the network approaches ~98% classification accuracy.
 
-See Perceptron_Model.ipnyb for a Jupyter notebook implementing the code, with figures incorporated.
+See Perceptron_Model.ipynb for a Jupyter notebook implementing the code, with figures incorporated.
