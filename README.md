@@ -9,3 +9,5 @@ Place all of the files in the same directory as the training and test data, and 
 
 Credit: www.neuralnetworksanddeeplearning.com for an explanation of the back-propagation and stochastic gradient descent
 algorithms.
+
+With a few modifications, this code can be made to work for any arbitrarily-sized network (limited, of course, by the computing power available to the train the network).
