@@ -47,23 +47,27 @@ end
 % STOCHASTIC GRADIENT DESCENT
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
-runs = 100000;
+runs = 10000;
 eta = 3;
 
 for ii=1:runs
     indeces = ceil(rand([batchSize,1]).*(numImages-1));
-    dCostdWeight = cell(1,2);
-    dCostdBias = cell(1,2);
-    dCostdWeight{1} = zeros(numPixels,numHidden);
-    dCostdWeight{2} = zeros(numHidden,numDigits);
-    dCostdBias{1} = zeros(numHidden,1);
-    dCostdBias{2} = zeros(numDigits,1);
+    numCalcs = size(myNet.Weights,2);
+    dCostdWeight = cell(1,numCalcs);
+    dCostdBias = cell(1,numCalcs);
+    
+    for jj=1:numCalcs
+        layer1 = size(myNet.Weights{jj},1);
+        layer2 = size(myNet.Weights{jj},2);
+        dCostdWeight{jj} = zeros(layer1,layer2);
+        dCostdBias{jj} = zeros(layer2,1);
+    end
     
     for jj=1:batchSize
         index = indeces(jj);
         [costweight,costbias] = BackProp(Images(:,index),myNet,...
         DesireOutput(:,index));
-        for kk=1:2
+        for kk=1:numCalcs
             dCostdWeight{kk} = dCostdWeight{kk}+costweight{kk};
             dCostdBias{kk} = dCostdBias{kk}+costbias{kk};
         end
@@ -103,3 +107,11 @@ count = count+1;
 end
 end
 Accuracy = count/numImages;
+
+% for ii=1:5
+%     index = ceil(rand*(numImages-1));
+%     digit = classifiedVals(index);
+%     image = reshape(Images(:,index),[28,28]);
+%     figure();imagesc(image);title(sprintf('Classified as a(n) %i',digit));
+%     colormap gray;
+% end
