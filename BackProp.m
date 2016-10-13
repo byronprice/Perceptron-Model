@@ -29,7 +29,7 @@ end
 dCostdWeight = cell(1,numCalcs);
 dCostdBias = cell(1,numCalcs);
 
-deltaL = (Output{end}-DesireOutput).*SigmoidPrime(Z{end});
+deltaL = (Output{end}-DesireOutput);%.*SigmoidPrime(Z{end});
 dCostdWeight{end} = Activations{end}*deltaL';
 dCostdBias{end} = deltaL;
 
@@ -45,7 +45,6 @@ end
 % cross-entropy cost function
 %  with neuron function a and desired output y
 %  a might be the sigmoid function for example
-%  x are the activations
 % C = -1/n * SUM_x [yln(a)+(1-y)ln(1-a)]
 %  in the output layer, we have
 % dCostdWeight = 1/n * SUM_x [a(L-1)*(a(L)-y]
@@ -53,9 +52,6 @@ end
 %  this corresponds to the exact same as above for the
 %  quadratic cost function but with no multiplication
 %  by sigmoid prime
-% regularization adds a term lambda/n*w to the cost function
-%  dCostdWeight ... this forces the network to have low weights
-%  
 
 %softmax cost function 
 % outputs are exponentials that sum to 1

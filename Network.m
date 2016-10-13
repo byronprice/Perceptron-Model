@@ -24,7 +24,7 @@ value{1} = cell(1,numLayers-1);
 value2{1} = cell(1,numLayers-1);
 
 for ii=1:(numLayers-1)
-    value{1}{ii} = normrnd(0,1,[LayerVector(ii),LayerVector(ii+1)]);
+    value{1}{ii} = normrnd(0,1/sqrt(LayerVector(ii)),[LayerVector(ii),LayerVector(ii+1)]);
     value2{1}{ii} = normrnd(0,1,[LayerVector(ii+1),1]);
 end
 

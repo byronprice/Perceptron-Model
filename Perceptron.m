@@ -28,8 +28,8 @@ numPixels = size(Images,1);
 
 % CREATE THE NETWORK WITH RANDOMIZED WEIGHTS AND BIASES
 numDigits = 10;
-numHidden = 15;
-myNet = Network([numPixels,numHidden,numDigits]); % from a function
+numHidden1 = 50;
+myNet = Network([numPixels,numHidden1,numDigits]); % from a function
      % in this directory, builds a 3-layer network
      
 DesireOutput = zeros(numDigits,numImages);
@@ -48,21 +48,20 @@ end
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
 runs = 10000;
-eta = 3;
+eta = 0.5;
+
+numCalcs = size(myNet.Weights,2);
+dCostdWeight = cell(1,numCalcs);
+dCostdBias = cell(1,numCalcs);
 
 for ii=1:runs
     indeces = ceil(rand([batchSize,1]).*(numImages-1));
-    numCalcs = size(myNet.Weights,2);
-    dCostdWeight = cell(1,numCalcs);
-    dCostdBias = cell(1,numCalcs);
-    
     for jj=1:numCalcs
         layer1 = size(myNet.Weights{jj},1);
         layer2 = size(myNet.Weights{jj},2);
         dCostdWeight{jj} = zeros(layer1,layer2);
         dCostdBias{jj} = zeros(layer2,1);
     end
-    
     for jj=1:batchSize
         index = indeces(jj);
         [costweight,costbias] = BackProp(Images(:,index),myNet,...
@@ -72,8 +71,8 @@ for ii=1:runs
             dCostdBias{kk} = dCostdBias{kk}+costbias{kk};
         end
     end
-    [myNet] = GradientDescent(myNet,dCostdWeight,dCostdBias,batchSize,eta);
-    clear indeces dCostdWeight dCostdBias;
+    [myNet] = GradientDescent(myNet,dCostdWeight,dCostdBias,batchSize,eta,numImages);
+    clear indeces;% dCostdWeight dCostdBias;
 end
 
 % COMPARE ON TEST DATA
@@ -100,13 +99,15 @@ count = 0;
 for ii=1:numImages
 [Output,Z] = Feedforward(Images(:,ii),myNet);
 [~,realVal] = max(DesireOutput(:,ii));
-[~,netVal] = max(Output{2});
+[~,netVal] = max(Output{end});
 classifiedVals(ii) = netVal-1;
 if realVal == netVal
 count = count+1;
 end
 end
 Accuracy = count/numImages;
+
+display(sprintf('Accuracy: %3.3f',Accuracy));
 
 % for ii=1:5
 %     index = ceil(rand*(numImages-1));
