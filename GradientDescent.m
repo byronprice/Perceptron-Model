@@ -19,7 +19,7 @@ function [Network] = GradientDescent(Network,dCostdWeight,dCostdBias,m,eta,n)
 %
 % Created: 2016/02/05, 24 Cummington, Boston
 %  Byron Price
-% Updated: 2016/10/12
+% Updated: 2016/10/13
 % By: Byron Price
 
 numCalcs = size(Network.Weights,2);

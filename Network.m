@@ -10,7 +10,7 @@ function [myNet] = Network(LayerVector)
 %           values.
 % Created: 2016/02/05, 24 Cummington, Boston
 %  Byron Price
-% Updated: 2016/02/08
+% Updated: 2016/10/13
 %  By: Byron Price
 
 field = 'Weights';

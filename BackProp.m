@@ -14,7 +14,7 @@ function [dCostdWeight,dCostdBias] = BackProp(Input,Network,DesireOutput)
 %
 % Created: 2016/02/05, 24 Cummington, Boston
 %  Byron Price
-% Updated: 2016/02/08
+% Updated: 2016/10/13
 %  By: Byron Price
 
 [Output,Z] = Feedforward(Input,Network);
