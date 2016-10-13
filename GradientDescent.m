@@ -31,3 +31,7 @@ for ii=1:numCalcs
 end
 end
 
+%for L2 regularization
+%  do (1-eta*lambda/n)*w - ...
+%  n is the total number of training examples
+%  lambda is called the regularization parameter
