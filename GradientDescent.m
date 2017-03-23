@@ -1,4 +1,4 @@
-function [Network] = GradientDescent(Network,dCostdWeight,dCostdBias,m,eta,n)
+function [Network] = GradientDescent(Network,dCostdWeight,dCostdBias,m,eta,n,lambda)
 %GradientDescent.m
 %   GradientDescent algorithm for updating the weights
 %    and biases of our network, i.e. learning.
@@ -13,6 +13,7 @@ function [Network] = GradientDescent(Network,dCostdWeight,dCostdBias,m,eta,n)
 %         script Perceptron
 %       eta - learning rate, again specified in the script Perceptron
 %       n - total number of training examples
+%       lambda - L2 regularization parameter to help avoid overfitting
 %
 %OUTPUT: Network - the same as the input 'Network' but with modified
 %          weights and biases
@@ -23,7 +24,8 @@ function [Network] = GradientDescent(Network,dCostdWeight,dCostdBias,m,eta,n)
 % By: Byron Price
 
 numCalcs = size(Network.Weights,2);
-lambda = 10;
+%lambda = 10;
+
 for ii=1:numCalcs
     w = (Network.Weights{ii});
     b = Network.Biases{ii};
