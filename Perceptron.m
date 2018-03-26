@@ -47,7 +47,7 @@ end
 % STOCHASTIC GRADIENT DESCENT
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
-runs = 10000;
+runs = 1e4;
 eta = 0.5;
 
 numCalcs = size(myNet.Weights,2);
@@ -97,17 +97,17 @@ end
 classifiedVals = zeros(numImages,1);
 count = 0;
 for ii=1:numImages
-[Output,Z] = Feedforward(Images(:,ii),myNet);
-[~,realVal] = max(DesireOutput(:,ii));
-[~,netVal] = max(Output{end});
-classifiedVals(ii) = netVal-1;
-if realVal == netVal
-count = count+1;
-end
+    [Output,Z] = Feedforward(Images(:,ii),myNet);
+    [~,realVal] = max(DesireOutput(:,ii));
+    [~,netVal] = max(Output{end});
+    classifiedVals(ii) = netVal-1;
+    if realVal == netVal
+        count = count+1;
+    end
 end
 Accuracy = count/numImages;
 
-display(sprintf('Accuracy: %3.3f',Accuracy));
+fprintf('Accuracy: %3.3f',Accuracy);
 
 % for ii=1:5
 %     index = ceil(rand*(numImages-1));
