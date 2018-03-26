@@ -47,8 +47,9 @@ end
 % STOCHASTIC GRADIENT DESCENT
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
-runs = 1e4;
-eta = 0.5;
+runs = 5e4;
+eta = 1;
+lambda = 1;
 
 numCalcs = size(myNet.Weights,2);
 dCostdWeight = cell(1,numCalcs);
@@ -71,7 +72,7 @@ for ii=1:runs
             dCostdBias{kk} = dCostdBias{kk}+costbias{kk};
         end
     end
-    [myNet] = GradientDescent(myNet,dCostdWeight,dCostdBias,batchSize,eta,numImages);
+    [myNet] = GradientDescent(myNet,dCostdWeight,dCostdBias,batchSize,eta,numImages,lambda);
     clear indeces;% dCostdWeight dCostdBias;
 end
 
@@ -107,7 +108,7 @@ for ii=1:numImages
 end
 Accuracy = count/numImages;
 
-fprintf('Accuracy: %3.3f',Accuracy);
+fprintf('Accuracy: %3.3f\n',Accuracy);
 
 % for ii=1:5
 %     index = ceil(rand*(numImages-1));
