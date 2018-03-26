@@ -5,7 +5,7 @@ the network using stochastic gradient descent.  It then runs the altered network
 must be previously downloaded and placed in the same directory.  Here, the files are saved as "TrainingData.mat" and 
 "TestData.mat", with the image and label files saved as matrices, "Images" and "Labels".
 
-Place all of the files in the same directory as the training and test data, and run "Perceptron" . As is, it should attain ~96% accuracy and requires maybe 1 minute to train. The algorithm uses L2 regularization, though it can easily be reverted to remove this additional complexity.
+Place all of the files in the same directory as the training and test data, and run "Perceptron" . As is, it should attain ~96% accuracy and requires maybe 2 minutes to train. The algorithm uses L2 regularization, though it can easily be reverted to remove this additional complexity.
 
 Change the variable "runs" in the stochastic gradient descent algorithm for longer training periods.  With more and more training runs, the network approaches ~98% classification accuracy.
 
