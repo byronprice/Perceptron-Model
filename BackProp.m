@@ -29,7 +29,8 @@ end
 dCostdWeight = cell(1,numCalcs);
 dCostdBias = cell(1,numCalcs);
 
-deltaL = (Output{end}-DesireOutput).*SigmoidPrime(Z{end});
+deltaL = (Output{end}-DesireOutput);%.*SigmoidPrime(Z{end}); % add this back for 
+                                % mean-squared error cost function
 dCostdWeight{end} = Activations{end}*deltaL';
 dCostdBias{end} = deltaL;
 
@@ -47,7 +48,7 @@ end
 %  a might be the sigmoid function for example
 % C = -1/n * SUM_x [yln(a)+(1-y)ln(1-a)]
 %  in the output layer, we have
-% dCostdWeight = 1/n * SUM_x [a(L-1)*(a(L)-y]
+% dCostdWeight = 1/n * SUM_x [a(L-1)*(a(L)-y)]
 % dCostdBias = 1/n * SUM_x [a(L)-y]
 %  this corresponds to the exact same as above for the
 %  quadratic cost function but with no multiplication
