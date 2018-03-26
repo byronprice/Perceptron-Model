@@ -1,6 +1,6 @@
 # Perceptron-Model
 This code implements a Perceptron neural network model.  It works using the back-propagation algorithm on "sigmoidal" neurons, 
-using a mean-squared error cost function.  The code "Perceptron.m" takes training data from the MNIST database and trains
+using a cross-entropy cost function (very similar to the mean-squared error cost function, and the two can easily be interchanged).  The code "Perceptron.m" takes training data from the MNIST database and trains
 the network using stochastic gradient descent.  It then runs the altered network "myNet" on the MNIST test data.  That data
 must be previously downloaded and placed in the same directory.  Here, the files are saved as "TrainingData.mat" and 
 "TestData.mat", with the image and label files saved as matrices, "Images" and "Labels".

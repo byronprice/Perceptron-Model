@@ -29,14 +29,14 @@ end
 dCostdWeight = cell(1,numCalcs);
 dCostdBias = cell(1,numCalcs);
 
-deltaL = (Output{end}-DesireOutput);%.*SigmoidPrime(Z{end});
+deltaL = (Output{end}-DesireOutput).*SigmoidPrime(Z{end});
 dCostdWeight{end} = Activations{end}*deltaL';
 dCostdBias{end} = deltaL;
 
 for ii=numCalcs:-1:2
     W = Network.Weights{ii};
     deltaL = (W*deltaL).*SigmoidPrime(Z{ii-1});
-
+    
     dCostdWeight{ii-1} = Activations{ii-1}*deltaL';
     dCostdBias{ii-1} = deltaL;
 end
