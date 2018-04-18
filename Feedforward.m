@@ -23,17 +23,13 @@ function [Output,Z] = Feedforward(Input,Network)
 % Updated: 2016/02/08
 %  By: Byron Price
 
-numCalcs = size(Network.Weights,2);
-Output = cell(1,numCalcs-1);
-Z = cell(1,numCalcs-1);
+Output = cell(1,Network.numCalcs);
+Z = cell(1,Network.numCalcs);
 
 X = Input;
-for ii=1:numCalcs
-    w = (Network.Weights{ii})';
-    b = Network.Biases{ii};
-    Z{ii} = w*X+b;
+for ii=1:Network.numCalcs
+    Z{ii} = ((Network.Weights{ii})')*X+Network.Biases{ii};
     Output{ii} = Sigmoid(Z{ii});
-    clear w X b;
     X = Output{ii};
 end
 end

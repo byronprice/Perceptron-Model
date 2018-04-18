@@ -47,34 +47,39 @@ end
 % STOCHASTIC GRADIENT DESCENT
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
-runs = 5e4;
-eta = 1;
-lambda = 1;
+runs = 1e5;
+eta = 0.1; % learning rate
+lambda = 1; % L2 regularization parameter
+alpha = 0.5; % proportion of hidden nodes to keep during dropout
 
-numCalcs = size(myNet.Weights,2);
+numCalcs = myNet.numCalcs;
 dCostdWeight = cell(1,numCalcs);
 dCostdBias = cell(1,numCalcs);
 
 for ii=1:runs
     indeces = ceil(rand([batchSize,1]).*(numImages-1));
+    [dropOutNet,dropOutInds] = MakeDropOutNet(myNet,alpha);
     for jj=1:numCalcs
-        layer1 = size(myNet.Weights{jj},1);
-        layer2 = size(myNet.Weights{jj},2);
+        layer1 = dropOutNet.layerStructure(jj);
+        layer2 = dropOutNet.layerStructure(jj+1);
         dCostdWeight{jj} = zeros(layer1,layer2);
         dCostdBias{jj} = zeros(layer2,1);
     end
     for jj=1:batchSize
         index = indeces(jj);
-        [costweight,costbias] = BackProp(Images(:,index),myNet,...
+        [costweight,costbias] = BackProp(Images(:,index),dropOutNet,...
         DesireOutput(:,index));
         for kk=1:numCalcs
             dCostdWeight{kk} = dCostdWeight{kk}+costweight{kk};
             dCostdBias{kk} = dCostdBias{kk}+costbias{kk};
         end
     end
-    [myNet] = GradientDescent(myNet,dCostdWeight,dCostdBias,batchSize,eta,numImages,lambda);
-    clear indeces;% dCostdWeight dCostdBias;
+    [dropOutNet] = GradientDescent(dropOutNet,dCostdWeight,dCostdBias,batchSize,eta,numImages,lambda);
+    [myNet] = RevertToWholeNet(dropOutNet,myNet,dropOutInds);
+%     clear indeces;% dCostdWeight dCostdBias;
 end
+
+[myNet] = AdjustDropOutNet(myNet,alpha);
 
 % COMPARE ON TEST DATA
 clear Images Labels;

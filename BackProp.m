@@ -18,23 +18,23 @@ function [dCostdWeight,dCostdBias] = BackProp(Input,Network,DesireOutput)
 %  By: Byron Price
 
 [Output,Z] = Feedforward(Input,Network);
-numCalcs = size(Network.Weights,2);
 
-Activations = cell(1,numCalcs);
+Activations = cell(1,Network.numCalcs);
 Activations{1} = Input;
-for ii=2:numCalcs
+for ii=2:Network.numCalcs
     Activations{ii} = Output{ii-1};
 end
 
-dCostdWeight = cell(1,numCalcs);
-dCostdBias = cell(1,numCalcs);
+dCostdWeight = cell(1,Network.numCalcs);
+dCostdBias = cell(1,Network.numCalcs);
 
 deltaL = (Output{end}-DesireOutput);%.*SigmoidPrime(Z{end}); % add this back for 
-                                % mean-squared error cost function
+                                % mean-squared error cost function, unless
+                                % you want the output neuron to be linear
 dCostdWeight{end} = Activations{end}*deltaL';
 dCostdBias{end} = deltaL;
 
-for ii=numCalcs:-1:2
+for ii=Network.numCalcs:-1:2
     W = Network.Weights{ii};
     deltaL = (W*deltaL).*SigmoidPrime(Z{ii-1});
     

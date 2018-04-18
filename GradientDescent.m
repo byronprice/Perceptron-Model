@@ -23,10 +23,9 @@ function [Network] = GradientDescent(Network,dCostdWeight,dCostdBias,m,eta,n,lam
 % Updated: 2016/10/13
 % By: Byron Price
 
-numCalcs = size(Network.Weights,2);
 %lambda = 10;
 
-for ii=1:numCalcs
+for ii=1:Network.numCalcs
     w = (Network.Weights{ii});
     b = Network.Biases{ii};
     Network.Weights{ii} = (1-eta*lambda/n).*w - (eta/m).*dCostdWeight{ii};
