@@ -29,7 +29,7 @@ Z = cell(1,Network.numCalcs);
 X = Input;
 for ii=1:Network.numCalcs
     Z{ii} = ((Network.Weights{ii})')*X+Network.Biases{ii};
-    Output{ii} = Sigmoid(Z{ii});
+    Output{ii} = SoftPlus(Z{ii});
     X = Output{ii};
 end
 end

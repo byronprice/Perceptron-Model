@@ -47,8 +47,8 @@ end
 % STOCHASTIC GRADIENT DESCENT
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
-runs = 1e5;
-eta = 0.1; % learning rate
+runs = 5e4;
+eta = 1; % learning rate
 lambda = 1; % L2 regularization parameter
 alpha = 0.5; % proportion of hidden nodes to keep during dropout
 

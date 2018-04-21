@@ -28,7 +28,10 @@ end
 dCostdWeight = cell(1,Network.numCalcs);
 dCostdBias = cell(1,Network.numCalcs);
 
-deltaL = (Output{end}-DesireOutput);%.*SigmoidPrime(Z{end}); % add this back for 
+deltaL = ((-2*DesireOutput./exp(Z{end}))+2).*exp(Z{end}); % Poisson deviance cost function
+                                           % with exponential output neurons
+% deltaL = (Output{end}-DesireOutput); % cross-entropy cost with sigmoid output neurons
+                                % .*SigmoidPrime(Z{end}); % add this back for 
                                 % mean-squared error cost function, unless
                                 % you want the output neuron to be linear
 dCostdWeight{end} = Activations{end}*deltaL';
@@ -36,7 +39,7 @@ dCostdBias{end} = deltaL;
 
 for ii=Network.numCalcs:-1:2
     W = Network.Weights{ii};
-    deltaL = (W*deltaL).*SigmoidPrime(Z{ii-1});
+    deltaL = (W*deltaL).*SoftPlusPrime(Z{ii-1});
     
     dCostdWeight{ii-1} = Activations{ii-1}*deltaL';
     dCostdBias{ii-1} = deltaL;
