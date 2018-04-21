@@ -39,7 +39,7 @@ dCostdBias{end} = deltaL;
 
 for ii=Network.numCalcs:-1:2
     W = Network.Weights{ii};
-    deltaL = (W*deltaL).*SoftPlusPrime(Z{ii-1});
+    deltaL = (W*deltaL).*SwishPrime(Z{ii-1});
     
     dCostdWeight{ii-1} = Activations{ii-1}*deltaL';
     dCostdBias{ii-1} = deltaL;
