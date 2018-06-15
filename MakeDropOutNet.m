@@ -15,10 +15,10 @@ function [dropOutNet,indices] = MakeDropOutNet(Network,alpha)
 % Updated: 2018/04/18
 %  By: Byron Price
 
-if Network.numHidden==0
-   fprintf('Error: Network must have at least 1 hidden layer\n');
-   return;
-end
+% if Network.numHidden==0
+%    fprintf('Error: Network must have at least 1 hidden layer\n');
+%    return;
+% end
 newStruct = Network.layerStructure;
 for ii=1:Network.numHidden
    newStruct(ii+1) = round(Network.layerStructure(ii+1)*alpha);
