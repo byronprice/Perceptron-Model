@@ -59,11 +59,10 @@ dCostdBias = cell(1,numCalcs);
 for ii=1:runs
     indeces = ceil(rand([batchSize,1]).*(numImages-1));
     [dropOutNet,dropOutInds] = MakeDropOutNet(myNet,alpha);
+
     for jj=1:numCalcs
-        layer1 = dropOutNet.layerStructure(jj);
-        layer2 = dropOutNet.layerStructure(jj+1);
-        dCostdWeight{jj} = zeros(layer1,layer2);
-        dCostdBias{jj} = zeros(layer2,1);
+        dCostdWeight{jj} = zeros(size(dropOutNet.Weights{jj}));
+        dCostdBias{jj} = zeros(size(dropOutNet.Biases{jj}));
     end
     for jj=1:batchSize
         index = indeces(jj);
