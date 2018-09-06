@@ -48,8 +48,8 @@ end
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
 runs = 5e4;
-eta = 0.1; % learning rate
-lambda = 1; % L2 regularization parameter
+eta = 0.01; % learning rate
+lambda = 10; % L2 regularization parameter
 alpha = 1; % proportion of hidden nodes to keep during dropout
 
 numCalcs = myNet.numCalcs;
