@@ -28,7 +28,7 @@ numPixels = size(Images,1);
 
 % CREATE THE NETWORK WITH RANDOMIZED WEIGHTS AND BIASES
 numDigits = 10;
-numHidden1 = 50;
+numHidden1 = 100;
 myNet = Network([numPixels,numHidden1,numDigits]); % from a function
      % in this directory, builds a 3-layer network
      
