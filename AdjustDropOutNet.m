@@ -12,7 +12,7 @@ function [Network] = AdjustDropOutNet(Network,alpha)
 % Updated: 2018/04/18
 %  By: Byron Price
 
-for ii=2:Network.numCalcs
+for ii=2:Network.numCalcs-1
    Network.Weights{ii} = Network.Weights{ii}.*alpha;
 end
 

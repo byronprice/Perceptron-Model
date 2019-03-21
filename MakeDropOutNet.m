@@ -20,7 +20,7 @@ function [dropOutNet,indices] = MakeDropOutNet(Network,alpha)
 %    return;
 % end
 newStruct = Network.layerStructure;
-for ii=1:Network.numHidden
+for ii=1:Network.numHidden-1
    newStruct(ii+1) = round(Network.layerStructure(ii+1)*alpha);
 end
 
@@ -28,7 +28,7 @@ dropOutNet = EmptyNetwork(newStruct);
 
 indices = cell(Network.numLayers,1);
 for ii=1:Network.numLayers
-    if ii==1 || ii==Network.numLayers
+    if ii==1 || ii>=(Network.numLayers-1)
         indices{ii} = 1:Network.layerStructure(ii);
     else
          indices{ii} = randperm(Network.layerStructure(ii),dropOutNet.layerStructure(ii));

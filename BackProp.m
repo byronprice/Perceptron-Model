@@ -31,6 +31,8 @@ dCostdBias = cell(1,Network.numCalcs);
 %deltaL = exp(Z{end})-DesireOutput; % Poisson deviance cost function
                                            % with exponential output neurons
 %deltaL = (Z{end}-DesireOutput); % linear output neuron, mean-squared error cost
+% tmp = Output{end}; %apply softmax
+% softmaxout = exp(tmp)./sum(exp(tmp));
 deltaL = (Output{end}-DesireOutput); % cross-entropy cost with sigmoid output neurons
                                 % .*SigmoidPrime(Output{end}); % add this back for 
                                 % mean-squared error cost function, unless

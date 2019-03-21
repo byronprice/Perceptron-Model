@@ -28,7 +28,7 @@ numPixels = size(Images,1);
 
 % CREATE THE NETWORK WITH RANDOMIZED WEIGHTS AND BIASES
 numDigits = 10;
-numHidden1 = 50;
+numHidden1 = 100;
 myNet = Network([numPixels,numHidden1,numDigits]); % from a function
      % in this directory, builds a 3-layer network
      
@@ -47,10 +47,10 @@ end
 % STOCHASTIC GRADIENT DESCENT
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
-runs = 5e4;
+runs = 1e4;
 eta = 0.01; % learning rate
 lambda = 10; % L2 regularization parameter
-alpha = 1; % proportion of hidden nodes to keep during dropout
+alpha = 0.5; % proportion of hidden nodes to keep during dropout
 
 numCalcs = myNet.numCalcs;
 dCostdWeight = cell(1,numCalcs);
