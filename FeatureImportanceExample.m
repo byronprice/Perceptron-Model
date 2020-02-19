@@ -23,11 +23,16 @@ whichIms = randperm(numImages,10);
 
 for ii=1:10
     [featImport] = GetFeatureImport(myNet,Images(:,whichIms(ii)));
+    [Output,~] = Feedforward(Images(:,whichIms(ii)),myNet);
+    [~,outputDim] = max(Output{end});
     
     figure;subplot(1,2,1);
     imagesc(reshape(Images(:,whichIms(ii)),[28,28]));
+    title(sprintf('Ground Truth: %d',Labels(whichIms(ii))));
     colormap('gray');
     subplot(1,2,2);
     imagesc(reshape(featImport,[28,28]));
+    tmp = max(featImport);
+    caxis([-tmp tmp]);title(sprintf('Model Output: %d',outputDim-1));
     colormap('gray');
 end
