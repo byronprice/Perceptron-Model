@@ -28,15 +28,11 @@ end
 dCostdWeight = cell(1,Network.numCalcs);
 dCostdBias = cell(1,Network.numCalcs);
 
-%deltaL = exp(Z{end})-DesireOutput; % Poisson deviance cost function
-                                           % with exponential output neurons
-%deltaL = (Z{end}-DesireOutput); % linear output neuron, mean-squared error cost
 % tmp = Output{end}; %apply softmax
 % softmaxout = exp(tmp)./sum(exp(tmp));
-deltaL = (Output{end}-DesireOutput); % cross-entropy cost with sigmoid output neurons
-                                % .*SigmoidPrime(Output{end}); % add this back for 
-                                % mean-squared error cost function, unless
-                                % you want the output neuron to be linear
+
+[deltaL] = MeanSquareT2(Output,DesireOutput,Z);
+
 dCostdWeight{end} = Activations{end}*deltaL';
 dCostdBias{end} = deltaL;
 
@@ -46,6 +42,28 @@ for ii=Network.numCalcs:-1:2
     dCostdWeight{ii-1} = Activations{ii-1}*deltaL';
     dCostdBias{ii-1} = deltaL;
 end
+end
+
+function [deltaL] = CrossEntropy(Output,DesireOutput,Z)
+deltaL = -DesireOutput./Output{end}+(1-DesireOutput)./(1-Output{end});
+deltaL = deltaL.*SwishPrime(Z{end});
+end
+
+function [deltaL] = MeanSquare(Output,DesireOutput,Z)
+deltaL = (Output{end}-DesireOutput).*SwishPrime(Z{end});
+end
+
+function [deltaL] = MeanSquareT2(Output,DesireOutput,Z)
+deltaL = (Output{end}-DesireOutput);
+end
+
+function [deltaL] = MeanSquareLinearOut(Output,DesireOutput,Z)
+deltaL = (Z{end}-DesireOutput); % linear output neuron, mean-squared error cost
+end
+
+function [deltaL] = PoissonDev(Output,DesireOutput,Z)
+deltaL = exp(Z{end})-DesireOutput; % Poisson deviance cost function
+                                           % with exponential output neurons
 end
 
 % cross-entropy cost function

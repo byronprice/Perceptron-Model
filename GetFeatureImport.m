@@ -12,7 +12,9 @@ baselineValue = 0.5; % 0.5 for greyscale baseline, 0 for black
     
 numInputDims = Network.layerStructure(1);
 
-numGradCalcs = 5000;
+numGradCalcs = 1e3;
+% alpha = (1:numGradCalcs)./numGradCalcs;
+
 alpha = linspace(0,1,numGradCalcs);
 
 baselineIm = baselineValue.*ones(numInputDims,1);
@@ -22,6 +24,17 @@ for jj=1:numGradCalcs
     integral = integral+gradient./numGradCalcs;
 end
 featImport = (Input-baselineIm).*integral;
+
+%  these two should be approximately equal ... if they are not, then make
+%    numGradCalcs bigger
+[Output2,~] = Feedforward(baselineIm,Network);
+FxDiff = Output{end}(outputDim)-Output2{end}(outputDim);
+integratedGrads = sum(featImport);
+
+tolerance = 1e-2;
+if (abs(FxDiff-integratedGrads)/abs(FxDiff))>tolerance
+    disp('Increase number of gradient calculations');
+end
 
 end
 
@@ -42,38 +55,18 @@ function [gradient] = FIBackProp(Input,Network,outputDim)
 
 [Output,Z] = Feedforward(Input,Network);
 
-Activations = cell(1,Network.numCalcs);
-Activations{1} = Input;
-for ii=2:Network.numCalcs
-    Activations{ii} = Output{ii-1};
-end
+% Activations = cell(1,Network.numCalcs);
+% Activations{1} = Input;
+% for ii=2:Network.numCalcs
+%     Activations{ii} = Output{ii-1};
+% end
 
-dOutdWeight = cell(1,Network.numCalcs);
-% dOutdBias = cell(1,Network.numCalcs);
-
-%deltaL = exp(Z{end})-DesireOutput; % Poisson deviance cost function
-                                           % with exponential output neurons
-%deltaL = (Z{end}-DesireOutput); % linear output neuron, mean-squared error cost
-% tmp = Output{end}; %apply softmax
-% softmaxout = exp(tmp)./sum(exp(tmp));
-deltaL = Output{end}(outputDim); % cross-entropy cost with sigmoid output neurons
-                                % .*SigmoidPrime(Output{end}); % add this back for 
-                                % mean-squared error cost function, unless
-                                % you want the output neuron to be linear
-dOutdWeight{end} = Activations{end}*deltaL';
-% dOutdBias{end} = deltaL;
-
-for ii=Network.numCalcs:-1:2
+for ii=Network.numCalcs:-1:1
     if ii==Network.numCalcs
-        deltaL = (Network.Weights{ii}(:,outputDim)*deltaL).*SwishPrime(Z{ii-1});
+        gradient = Network.Weights{ii}(:,outputDim).*SwishPrime(Z{ii}(outputDim));
     else
-        deltaL = (Network.Weights{ii}*deltaL).*SwishPrime(Z{ii-1});
+        gradient = Network.Weights{ii}*(gradient.*SwishPrime(Z{ii}));
     end
-    
-    dOutdWeight{ii-1} = Activations{ii-1}*deltaL';
-%     dOutdBias{ii-1} = deltaL;
 end
-
-gradient = Network.Weights{1}*deltaL;
 
 end
