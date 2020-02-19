@@ -28,8 +28,8 @@ numPixels = size(Images,1);
 
 % CREATE THE NETWORK WITH RANDOMIZED WEIGHTS AND BIASES
 numDigits = 10;
-numHidden1 = 100;
-myNet = Network([numPixels,numHidden1,50,numDigits]); % from a function
+numHidden1 = 50;
+myNet = Network([numPixels,numHidden1,numDigits]); % from a function
      % in this directory, builds a 3-layer network
      
 DesireOutput = zeros(numDigits,numImages);
@@ -47,10 +47,10 @@ end
 % STOCHASTIC GRADIENT DESCENT
 batchSize = 10; % make mini batches and run the algorithm
      % on those "runs" times
-runs = 1e4;
-eta = 0.01; % learning rate
-lambda = 10; % L2 regularization parameter
-alpha = 0.75; % proportion of hidden nodes to keep during dropout
+runs = 5e4;
+eta = 0.005; % learning rate
+lambda = 1; % L2 regularization parameter
+alpha = 0.5; % proportion of hidden nodes to keep during dropout
 
 numCalcs = myNet.numCalcs;
 dCostdWeight = cell(1,numCalcs);
@@ -64,10 +64,18 @@ for ii=1:runs
         dCostdWeight{jj} = zeros(size(dropOutNet.Weights{jj}));
         dCostdBias{jj} = zeros(size(dropOutNet.Biases{jj}));
     end
+    runGray = binornd(1,1e-2);
     for jj=1:batchSize
         index = indeces(jj);
-        [costweight,costbias] = BackProp(Images(:,index),dropOutNet,...
-        DesireOutput(:,index));
+        if runGray && jj==1
+            % ocassionally force it to output all zeros for a grayscale
+            %  image (for the feature attribution routine)
+            [costweight,costbias] = BackProp(0.5.*ones(numPixels,1),dropOutNet,...
+                zeros(numDigits,1));
+        else
+            [costweight,costbias] = BackProp(Images(:,index),dropOutNet,...
+                DesireOutput(:,index));
+        end
         for kk=1:numCalcs
             dCostdWeight{kk} = dCostdWeight{kk}+costweight{kk};
             dCostdBias{kk} = dCostdBias{kk}+costbias{kk};
