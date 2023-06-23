@@ -66,6 +66,12 @@ deltaL = exp(Z{end})-DesireOutput; % Poisson deviance cost function
                                            % with exponential output neurons
 end
 
+function [deltaL] = LogisticLoss(Output,DesireOutput,Z)
+
+deltaL = (Sigmoid(Z{end})-DesireOutput);
+
+end
+
 % cross-entropy cost function
 %  with neuron function a and desired output y
 %  a might be the sigmoid function for example

@@ -8,16 +8,17 @@ if nargin<3
     [~,outputDim] = max(Output{end});
 end
 
-baselineValue = 0.5; % 0.5 for greyscale baseline, 0 for black
-    
-numInputDims = Network.layerStructure(1);
+% baselineValue = 0.5; % 0.5 for greyscale baseline, 0 for black
+%     
+% numInputDims = Network.layerStructure(1);
 
-numGradCalcs = 1e3;
+numGradCalcs = 5e3;
 % alpha = (1:numGradCalcs)./numGradCalcs;
 
 alpha = linspace(0,1,numGradCalcs);
 
-baselineIm = baselineValue.*ones(numInputDims,1);
+load('AverageMNIST.mat','AverageImage');
+baselineIm = AverageImage;% baselineValue.*ones(numInputDims,1);
 integral = 0;
 for jj=1:numGradCalcs
     [gradient] = FIBackProp(baselineIm+alpha(jj).*(Input-baselineIm),Network,outputDim);
@@ -29,6 +30,7 @@ featImport = (Input-baselineIm).*integral;
 %    numGradCalcs bigger
 [Output2,~] = Feedforward(baselineIm,Network);
 FxDiff = Output{end}(outputDim)-Output2{end}(outputDim);
+% FxDiff = sum(Output{end}(:)-Output2{end}(:));
 integratedGrads = sum(featImport);
 
 tolerance = 1e-2;
@@ -63,7 +65,8 @@ function [gradient] = FIBackProp(Input,Network,outputDim)
 
 for ii=Network.numCalcs:-1:1
     if ii==Network.numCalcs
-        gradient = Network.Weights{ii}(:,outputDim).*SwishPrime(Z{ii}(outputDim));
+        gradient = Network.Weights{ii}(:,outputDim)*SwishPrime(Z{ii}(outputDim));
+%         gradient = Network.Weights{ii}*SwishPrime(Z{ii});
     else
         gradient = Network.Weights{ii}*(gradient.*SwishPrime(Z{ii}));
     end
